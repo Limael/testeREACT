@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+:root {
+  --yellow: #F5DB13;
+
+  --yellow-gradient: linear-gradient(180deg, #F5DB13 0%, #F2B807 100%);
+
+  --danger: #E25858;
+
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
