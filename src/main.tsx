@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import './global.css'
 import { Pokedex } from './Components/Pokedex';
+import { Legendaries } from './Components/Legendaries';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,11 @@ const router = createBrowserRouter([
   {
     path: "/pokedex",
     element: <Pokedex />,
+
+  },
+  {
+    path: "/legendaries",
+    element: <Legendaries />,
 
   },
 ]);

@@ -1,0 +1,109 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.container .carousel {
+    max-width: 66vw;
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 42px;
+
+
+}
+
+.container .carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.section_legendaries {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    align-items: center;
+}
+
+.title {
+    font-family: 'Karla';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 72px;
+    line-height: 84px;
+    letter-spacing: 4px;
+    color: #FFFFFF;
+    align-self: flex-start;
+
+}
+
+.divider {
+    background: #FFFFFF;
+    width: 90%;
+    align-self: flex-start;
+}
+
+.legendary_information_container {
+    display: flex;
+    align-items: center;
+}
+
+.legendary_information_container img {
+    width: 373px;
+}
+
+.legendary_name {
+    font-family: 'Karla';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 72px;
+    line-height: 84px;
+    letter-spacing: 4px;
+
+    color: #FDFDFD;
+    text-transform: capitalize;
+
+}
+
+.legendary_description {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+
+    color: #FFFFFF;
+
+}
+
+.legendary_stats {
+    font-family: 'Karla';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #FDFDFD;
+
+}
+
+.legendary_stats_number {
+    font-family: 'Karla';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #FDFDFD;
+
+}
+
+.stats_container {
+    display: flex;
+    flex-direction: column;
+}
+
+.progress {
+    border-radius: 8px;
+    height: 7px !important;
+}
+
+.carousel_container {
+    display: flex;
+    gap: 20px;
+}

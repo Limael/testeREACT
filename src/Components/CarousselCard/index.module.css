@@ -1,0 +1,36 @@
+.img {
+    width: 171px;
+}
+
+.legendary_card {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(215.78deg, #B57E10 -124.09%, #B57E10 -78.76%, #F9DF7B -35.76%, #FFF3A6 8.4%, #F9DF7B 50.24%, #B57E10 99.06%);
+    border-radius: 18px;
+    min-width: 127px;
+}
+
+.legendary_card_information {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around
+}
+
+.legendary_name {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    text-transform: capitalize;
+
+    color: #1D1E1D;
+
+}
+
+.name_card {
+    background: linear-gradient(180deg, #FFFFFF 30.32%, #F5F5F5 100%);
+    border-radius: 16px;
+    height: 72px;
+    display: flex;
+}
