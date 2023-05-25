@@ -18,8 +18,8 @@ export const Header = () => {
             <Link to="/"> <img className={styles.img} src={logo} alt="Logo principal do sistema" /></Link>
             <article className={styles.navbar_container}>
                 <a href="#" className={styles.navbar_item_selected} > <Link to="/">Home </Link></a>
-                <a href="#"> <Link to="pokedex">Pokédex</Link></a>
-                <a href="#"><Link to="legendaries">Legendaries</Link></a>
+                <a href="#"> <Link to="/pokedex">Pokédex</Link></a>
+                <a href="#"><Link to="/legendaries">Legendaries</Link></a>
                 <a href="https://pokeapi.co/docs/v2#pokemon-section">Documentation</a>
             </article>
 
