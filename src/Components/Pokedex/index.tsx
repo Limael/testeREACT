@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import { Header } from '../Header';
 import styles from './index.module.css';
 import { Menu, MenuButton, MenuList, Button, SimpleGrid, CircularProgress, Modal, ModalOverlay, ModalContent, ModalCloseButton, ModalBody, MenuItem, Checkbox, Progress } from '@chakra-ui/react';
-
+import api from '../../api/api';
 import { CardPokemon, PokemonTypeProps } from '../CardPokemon';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Badge } from '../Badge';
-import api from '../../api/api';
 
 type PokemonType = {
   name: string;
@@ -23,123 +22,159 @@ export const Pokedex = () => {
   const [offset, setOffset] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+
   const [selectedPokemon, setSelectedPokemon] = useState<PokemonTypeProps | null>(null);
+
+
+
   const [searchValue, setSearchValue] = useState('')
-
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fetchPokemonSearch = async () => {
-    if (searchValue.trim() === '') {
-      setPokemonSearchList([])
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const response = await api.get(`/pokemon/${searchValue}`);
-      const data = response.data;
-
-      const pokemon: PokemonTypeProps = {
-        name: data.name,
-        attack: data.stats[1].base_stat,
-        defense: data.stats[2].base_stat,
-        types: data.types.map((type: { type: { name: string } } & PokemonType) => type.type.name),
-        image: data.sprites.other['official-artwork'].front_default,
-        onClick: () => handlePokemonClick(pokemon),
-        hp: data.stats[0].base_stat,
-        spAttack: data.stats[3].base_stat,
-        spDefense: data.stats[4].base_stat,
-        experience: data.base_experience,
-        generation: data.game_indices[0].version.url.split('/').slice(-2, -1)[0],
-        index: data.id,
-        abilities: data.abilities.map((ability: { ability: { name: string } }) => ability.ability.name),
-
-      };
-
-
-      setPokemonSearchList([pokemon]);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching Pokemon:', error);
-      setLoading(false);
-    }
-  };
-  const fetchPokemonTypes = async () => {
-    try {
-      const response = await api.get('/type');
-      setPokemonTypes(response.data.results);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fetchPokemonList = async () => {
-    setLoading(true);
-
-    try {
-      const response = await api.get(`/pokemon?limit=${PAGE_SIZE}&offset=${offset}`);
-      setPokemonCount(response.data.count);
-
-      const results: PokemonType[] = response.data.results;
-
-      const formattedPokemonList: PokemonTypeProps[] = await Promise.all(
-        results.map(async (pokemon: PokemonType) => {
-          const response = await api.get(`/pokemon/${pokemon.name}`);
-          const data = response.data;
-          const formattedPokemon: PokemonTypeProps = {
-            name: data.name,
-            attack: data.stats[1].base_stat,
-            defense: data.stats[2].base_stat,
-            types: data.types.map((type: { type: { name: string } } & PokemonType) => type.type.name),
-            image: data.sprites.other['official-artwork'].front_default,
-            onClick: () => handlePokemonClick(formattedPokemon),
-            hp: data.stats[0].base_stat,
-            spAttack: data.stats[3].base_stat,
-            spDefense: data.stats[4].base_stat,
-            experience: data.base_experience,
-            generation: data.game_indices[0].version.url.split('/').slice(-2, -1)[0],
-            index: data.id,
-            abilities: data.abilities.map((ability: { ability: { name: string } }) => ability.ability.name),
-
-          };
-          return formattedPokemon;
-        })
-      );
-
-      if (offset === 0) {
-        setPokemonList(formattedPokemonList);
-      } else {
-        setPokemonList((prevList) => [...prevList, ...formattedPokemonList]);
+  useEffect(() => {
+    const fetchPokemonList = async () => {
+      if (searchValue.trim() === '') {
+        setPokemonSearchList([])
+        return;
       }
 
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching Pokemon list:', error);
-    }
-  };
+      setLoading(true);
 
-  useEffect(() => {
-    fetchPokemonSearch();
-  }, [fetchPokemonSearch, searchValue]);
+      try {
+        const response = await api.get(`/pokemon/${searchValue}`);
+        const data = response.data;
 
+        const pokemon: PokemonTypeProps = {
+          name: data.name,
+          attack: data.stats[1].base_stat,
+          defense: data.stats[2].base_stat,
+          types: data.types.map((type: { type: { name: string } } & PokemonType) => type.type.name),
+          image: data.sprites.other['official-artwork'].front_default,
+          onClick: () => handlePokemonClick(pokemon),
+          hp: data.stats[0].base_stat,
+          spAttack: data.stats[3].base_stat,
+          spDefense: data.stats[4].base_stat,
+          experience: data.base_experience,
+          generation: data.game_indices[0].version.url.split('/').slice(-2, -1)[0],
+          index: data.id,
+          abilities: data.abilities.map((ability: { ability: { name: string } }) => ability.ability.name),
+
+        };
+
+
+        setPokemonSearchList([pokemon]);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching Pokemon:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchPokemonList();
+  }, [searchValue]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
 
 
+  /*     const handleTypeSelect = (type: string) => {
+          setSelectedTypes((prevSelectedTypes) => {
+              if (prevSelectedTypes.includes(type)) {
+                  return prevSelectedTypes.filter((selectedType) => selectedType !== type);
+              } else {
+                  return [...prevSelectedTypes, type];
+              }
+          });
+      };
+  
+      useEffect(() => {
+          const lastSelectedType = selectedTypes[selectedTypes.length - 1];
+          console.log('Último tipo selecionado:', lastSelectedType);
+      }, [selectedTypes]);
+  
+   */
+
   useEffect(() => {
+    const fetchPokemonTypes = async () => {
+      try {
+        const response = await api.get('/type');
+        setPokemonTypes(response.data.results);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     fetchPokemonTypes();
   }, []);
 
+  /* 
+      useEffect(() => {
+          const fetchPokemonTypeName = async () => {
+              try {
+                  const lastSelectedType = selectedTypes[selectedTypes.length - 1];
+                  const response = await api.get(`/type/${lastSelectedType}`);
+                  setFilteredList(response.data.pokemon);
+              } catch (error) {
+                  console.log(error);
+              }
+          };
+  
+          fetchPokemonTypeName();
+      }, [selectedTypes]); */
+
+
+
+
+
 
 
   useEffect(() => {
+    const fetchPokemonList = async () => {
+      setLoading(true);
 
+      try {
+        const response = await api.get(`/pokemon?limit=${PAGE_SIZE}&offset=${offset}`);
+        setPokemonCount(response.data.count);
+
+        const results: PokemonType[] = response.data.results;
+
+        const formattedPokemonList: PokemonTypeProps[] = await Promise.all(
+          results.map(async (pokemon: PokemonType) => {
+            const response = await api.get(`/pokemon/${pokemon.name}`);
+            const data = response.data;
+            const formattedPokemon: PokemonTypeProps = {
+              name: data.name,
+              attack: data.stats[1].base_stat,
+              defense: data.stats[2].base_stat,
+              types: data.types.map((type: { type: { name: string } } & PokemonType) => type.type.name),
+              image: data.sprites.other['official-artwork'].front_default,
+              onClick: () => handlePokemonClick(formattedPokemon),
+              hp: data.stats[0].base_stat,
+              spAttack: data.stats[3].base_stat,
+              spDefense: data.stats[4].base_stat,
+              experience: data.base_experience,
+              generation: data.game_indices[0].version.url.split('/').slice(-2, -1)[0],
+              index: data.id,
+              abilities: data.abilities.map((ability: { ability: { name: string } }) => ability.ability.name),
+
+            };
+            return formattedPokemon;
+          })
+        );
+
+        if (offset === 0) {
+          setPokemonList(formattedPokemonList);
+        } else {
+          setPokemonList((prevList) => [...prevList, ...formattedPokemonList]);
+        }
+
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching Pokemon list:', error);
+      }
+    };
 
     fetchPokemonList();
-  }, [fetchPokemonList, offset]);
+  }, [offset]);
 
 
   const handleLoadMore = () => {
@@ -176,6 +211,8 @@ export const Pokedex = () => {
                 {pokemonTypes.map((type) => (
                   <MenuItem key={type.name}>
                     <Checkbox
+                    /*                 isChecked={selectedTypes.includes(type.name)}
+                                    onChange={() => handleTypeSelect(type.name)} */
                     >
                       {type.name}
                     </Checkbox>
